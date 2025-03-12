@@ -40,6 +40,21 @@ def classify_objects_in_image(image_path):
     return response.choices[0].message.content
 
 
+def generate_messages_object_with_img(image_path):
+    """Formats the messages object and encodes image as base 64"""
+
+    # Convert image to base64
+    base64_image = encode_image(image_path)
+
+    return [
+            {"role": "system", "content": "You are an AI model trained to identify objects in images."},
+            {"role": "user", "content": [
+                {"type": "text", "text": "Identify as many objects in this image as possible."},
+                {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{base64_image}", "detail": 'high'}}
+            ]}
+        ]
+
+
 # Example usage
 image_path = "/Users/jghawaly/Documents/nola_stock_photo.jpg"
 classified_objects = classify_objects_in_image(image_path)
